@@ -2,7 +2,7 @@
 
 **Where Ambition Sparks Opportunity**
 
-A modern, full-stack job portal application built with the MERN stack, featuring an elegant dark theme and a clean, professional user interface.
+A modern, MERN-stack job portal application built with the MERN stack, featuring an elegant dark theme and a clean, professional user interface.
 
 ---
 
