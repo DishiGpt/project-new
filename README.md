@@ -13,7 +13,9 @@ A modern, full-stack job portal application built with the MERN stack, featuring
 - 🎯 **Advanced Filters** - Filter by industry, work type, and location
 - 📱 **Responsive Design** - Seamless experience across all devices
 - 💼 **Job Applications** - Easy one-click apply to jobs
-- 👤 **Profile Management** - Update profile, resume, and skills
+- � **Bookmark Jobs** - Save jobs for later with persistent localStorage
+- 💾 **Saved Jobs Page** - View all your bookmarked jobs in one place
+- �👤 **Profile Management** - Update profile, resume, and skills
 - 📊 **Application Tracking** - Track all your job applications
 
 ### For Recruiters
@@ -26,9 +28,9 @@ A modern, full-stack job portal application built with the MERN stack, featuring
 ### Design Highlights
 - 🎨 **Modern UI/UX** - Clean, professional design with smooth animations
 - 🌓 **Dark/Light Mode** - Toggle between elegant dark and light themes
-- 🎭 **Glassmorphism Effects** - Modern glass-like UI components
 - ✨ **Smooth Animations** - Framer Motion powered transitions
-- 🎨 **Color Palette** - Indigo, Purple, and Teal accent colors
+- 🎨 **Color Palette** - Purple (#7209b7), Orange (#F83002), and Blue accent colors
+- 💾 **localStorage Integration** - Persistent bookmarks across sessions
 
 ---
 
@@ -181,6 +183,12 @@ http://localhost:5173
 - `POST /api/v1/job/post` - Post new job (recruiter)
 - `GET /api/v1/job/getadminjobs` - Get recruiter's jobs
 
+### Job Features
+- 🔖 **Bookmark System** - Save jobs to localStorage
+- 💾 **Saved Jobs Page** - `/saved-jobs` route to view bookmarked jobs
+- ✅ **Visual Feedback** - Icon changes when job is bookmarked
+- 🔄 **Persistent Storage** - Bookmarks survive page refreshes
+
 ### Company Routes
 - `POST /api/v1/company/register` - Register company
 - `GET /api/v1/company/get` - Get all companies
@@ -210,13 +218,21 @@ The application uses **JWT (JSON Web Tokens)** for authentication:
 - Hero section with search
 - Category carousel
 - Latest job listings
-- Modern glassmorphism design
+- Modern clean design with gradient backgrounds
 
 ### Job Listings
-- Advanced filtering
+- Advanced filtering (Location, Industry, Salary)
 - Real-time search
-- Beautiful job cards
-- Pagination support
+- Beautiful job cards with bookmark functionality
+- 3-column grid layout
+- Save for later button
+
+### Saved Jobs Page
+- View all bookmarked jobs
+- Persistent storage with localStorage
+- Same filtering and search capabilities
+- Job count display
+- Empty state for no saved jobs
 
 ### Dashboard (Recruiter)
 - Company management
@@ -246,7 +262,7 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Developer
 
-**IgniteX** - Built with ❤️ and ☕ by passionate developers
+**IgniteX** - Built with passion and by Dishi Gupta and Ishi Bhavsar 
 
 ---
 
@@ -263,13 +279,25 @@ This project is licensed under the MIT License.
 ## 📧 Contact
 
 For questions or support, please reach out:
-- Email: hello@ignitex.com
-- GitHub: [Your GitHub Profile]
+- Email: ishibhavsar41@gmail.com, dishigpt15@gmail.com
+- GitHub: https://github.com/Ishibhavsar, https://github.com/DishiGpt
 
 ---
 
+## ✅ Recent Updates
+
+### Bookmark & Save Jobs Feature (Latest)
+- ✅ **localStorage Integration** - Jobs bookmarked persist across sessions
+- ✅ **Saved Jobs Page** - Dedicated page to view all saved jobs
+- ✅ **Bookmark Icon** - Click to bookmark/unbookmark jobs
+- ✅ **Save For Later Button** - Quick save with visual feedback
+- ✅ **Navbar Link** - Easy access to saved jobs from navigation
+- ✅ **Empty State UI** - Friendly message when no jobs are saved
+- ✅ **Auto-fetch Jobs** - Saved jobs page fetches all jobs on mount
+
 ## 🔮 Future Enhancements
 
+- [ ] Backend storage for bookmarks (sync across devices)
 - [ ] Real-time notifications
 - [ ] Chat system between recruiters and candidates
 - [ ] Advanced analytics dashboard
