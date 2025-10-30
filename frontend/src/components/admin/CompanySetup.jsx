@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../shared/Navbar'
+// Removed Navbar import - now using Layout in App.jsx
 import { Button } from '../ui/button'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { Label } from '../ui/label'
@@ -76,8 +76,8 @@ const CompanySetup = () => {
 
     return (
         <div>
-            <Navbar />
-            <div className='max-w-xl mx-auto my-10'>
+            {/* Navbar removed - now rendered by Layout component */}
+            <div className='max-w-xl mx-auto my-10 px-4'>
                 <form onSubmit={submitHandler}>
                     <div className='flex items-center gap-5 p-8'>
                         <Button onClick={() => navigate("/admin/companies")} variant="outline" className="flex items-center gap-2 text-gray-500 font-semibold">
@@ -143,3 +143,4 @@ const CompanySetup = () => {
 }
 
 export default CompanySetup
+

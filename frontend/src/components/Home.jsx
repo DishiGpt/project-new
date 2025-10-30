@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Navbar from './shared/Navbar'
+// Removed Navbar import - now using Layout in App.jsx
 import HeroSection from './HeroSection'
 import CategoryCarousel from './CategoryCarousel'
 import LatestJobs from './LatestJobs'
@@ -19,7 +19,7 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <Navbar />
+      {/* Navbar removed - now rendered by Layout component */}
       <HeroSection />
       <CategoryCarousel />
       <LatestJobs />
@@ -29,3 +29,4 @@ const Home = () => {
 }
 
 export default Home
+

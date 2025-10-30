@@ -85,3 +85,4 @@ const ApplicantsTable = () => {
 }
 
 export default ApplicantsTable
+

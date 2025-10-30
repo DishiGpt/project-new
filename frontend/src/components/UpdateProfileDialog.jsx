@@ -155,3 +155,4 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 }
 
 export default UpdateProfileDialog
+

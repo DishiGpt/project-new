@@ -34,8 +34,9 @@ const CompaniesTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
+                        // Added key prop to fix React warning
                         filterCompany?.map((company) => (
-                            <tr>
+                            <tr key={company._id}>
                                 <TableCell>
                                     <Avatar>
                                         <AvatarImage src={company.logo}/>
@@ -65,3 +66,4 @@ const CompaniesTable = () => {
 }
 
 export default CompaniesTable
+

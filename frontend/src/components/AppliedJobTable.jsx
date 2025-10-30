@@ -35,3 +35,4 @@ const AppliedJobTable = () => {
 }
 
 export default AppliedJobTable
+

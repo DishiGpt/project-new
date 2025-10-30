@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Navbar from '../shared/Navbar'
+// Removed Navbar import - now using Layout in App.jsx
 import ApplicantsTable from './ApplicantsTable'
 import axios from 'axios';
 import { APPLICATION_API_END_POINT } from '@/utils/constant';
@@ -25,8 +25,8 @@ const Applicants = () => {
     }, []);
     return (
         <div>
-            <Navbar />
-            <div className='max-w-7xl mx-auto'>
+            {/* Navbar removed - now rendered by Layout component */}
+            <div className='max-w-7xl mx-auto px-4'>
                 <h1 className='font-bold text-xl my-5'>Applicants {applicants?.applications?.length}</h1>
                 <ApplicantsTable />
             </div>
@@ -35,3 +35,4 @@ const Applicants = () => {
 }
 
 export default Applicants
+

@@ -37,8 +37,9 @@ const AdminJobsTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
+                        // Added key prop to fix React warning
                         filterJobs?.map((job) => (
-                            <tr>
+                            <tr key={job._id}>
                                 <TableCell>{job?.company?.name}</TableCell>
                                 <TableCell>{job?.title}</TableCell>
                                 <TableCell>{job?.createdAt.split("T")[0]}</TableCell>
@@ -68,3 +69,4 @@ const AdminJobsTable = () => {
 }
 
 export default AdminJobsTable
+

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Navbar from '../shared/Navbar'
+// Removed Navbar import - now using Layout in App.jsx
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
@@ -34,8 +34,8 @@ const CompanyCreate = () => {
     }
     return (
         <div>
-            <Navbar />
-            <div className='max-w-4xl mx-auto'>
+            {/* Navbar removed - now rendered by Layout component */}
+            <div className='max-w-4xl mx-auto px-4'>
                 <div className='my-10'>
                     <h1 className='font-bold text-2xl'>Your Company Name</h1>
                     <p className='text-gray-500'>What would you like to give your company name? you can change this later.</p>
@@ -58,3 +58,4 @@ const CompanyCreate = () => {
 }
 
 export default CompanyCreate
+

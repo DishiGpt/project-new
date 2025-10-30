@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Navbar from '../shared/Navbar'
+// Removed Navbar import - now using Layout in App.jsx
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
@@ -61,8 +61,8 @@ const PostJob = () => {
 
     return (
         <div>
-            <Navbar />
-            <div className='flex items-center justify-center w-screen my-5'>
+            {/* Navbar removed - now rendered by Layout component */}
+            <div className='flex items-center justify-center w-screen my-5 px-4'>
                 <form onSubmit = {submitHandler} className='p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md'>
                     <div className='grid grid-cols-2 gap-2'>
                         <div>
@@ -154,9 +154,10 @@ const PostJob = () => {
                                     <SelectContent>
                                         <SelectGroup>
                                             {
+                                                // Added key prop to fix React warning
                                                 companies.map((company) => {
                                                     return (
-                                                        <SelectItem value={company?.name?.toLowerCase()}>{company.name}</SelectItem>
+                                                        <SelectItem key={company._id} value={company?.name?.toLowerCase()}>{company.name}</SelectItem>
                                                     )
                                                 })
                                             }
@@ -180,3 +181,4 @@ const PostJob = () => {
 }
 
 export default PostJob
+
