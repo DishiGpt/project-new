@@ -1,4 +1,9 @@
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import { USER_API_END_POINT } from './utils/constant'
+import { setUser } from './redux/authSlice'
 import Navbar from './components/shared/Navbar'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
@@ -20,6 +25,26 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 // Layout component that includes Navbar and renders child routes
 // This ensures Navbar is inside the router context so useNavigate() works
 const Layout = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Check if user is already logged in on app load
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get(`${USER_API_END_POINT}/profile`, {
+          withCredentials: true
+        });
+        if (res.data.success) {
+          dispatch(setUser(res.data.user));
+        }
+      } catch (error) {
+        // User not authenticated, keep user as null
+        console.log("Not authenticated");
+      }
+    };
+    checkAuth();
+  }, [dispatch]);
+
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Navbar />

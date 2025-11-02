@@ -88,25 +88,25 @@ const Navbar = () => {
                             ) : (
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Avatar className="cursor-pointer ring-2 ring-transparent hover:ring-primary transition-all">
+                                        <Avatar className="cursor-pointer ring-2 ring-purple-500 hover:ring-purple-700 dark:ring-purple-400 dark:hover:ring-purple-300 transition-all shadow-lg bg-white dark:bg-slate-800">
                                             <AvatarImage src={user?.profile?.profilePhoto} alt={user?.fullname} />
                                         </Avatar>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-80 p-4">
+                                    <PopoverContent className="w-80 p-4 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
                                         <div className='space-y-4'>
                                             <div className='flex gap-3 items-start'>
-                                                <Avatar className="w-12 h-12">
+                                                <Avatar className="w-12 h-12 ring-2 ring-purple-500 dark:ring-purple-400 bg-white dark:bg-slate-700">
                                                     <AvatarImage src={user?.profile?.profilePhoto} alt={user?.fullname} />
                                                 </Avatar>
                                                 <div className='flex-1'>
-                                                    <h4 className='font-semibold text-base'>{user?.fullname}</h4>
-                                                    <p className='text-sm text-muted-foreground line-clamp-2'>{user?.profile?.bio}</p>
+                                                    <h4 className='font-semibold text-base text-gray-900 dark:text-white'>{user?.fullname}</h4>
+                                                    <p className='text-sm text-gray-600 dark:text-gray-400 line-clamp-2'>{user?.profile?.bio}</p>
                                                 </div>
                                             </div>
-                                            <div className='flex flex-col gap-1 border-t pt-2'>
+                                            <div className='flex flex-col gap-1 border-t border-gray-200 dark:border-slate-600 pt-2'>
                                                 {
                                                     user && (
-                                                        <Link to="/profile" className='flex items-center gap-2 px-2 py-2 rounded-md hover:bg-muted transition-colors'>
+                                                        <Link to="/profile" className='flex items-center gap-2 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors text-gray-700 dark:text-gray-200'>
                                                             <User2 className="w-4 h-4" />
                                                             <span className="text-sm font-medium">View Profile</span>
                                                         </Link>
@@ -115,7 +115,7 @@ const Navbar = () => {
 
                                                 <button 
                                                     onClick={logoutHandler}
-                                                    className='flex items-center gap-2 px-2 py-2 rounded-md hover:bg-muted transition-colors text-left w-full'
+                                                    className='flex items-center gap-2 px-2 py-2 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-left w-full text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300'
                                                 >
                                                     <LogOut className="w-4 h-4" />
                                                     <span className="text-sm font-medium">Logout</span>

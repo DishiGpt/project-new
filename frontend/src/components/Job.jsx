@@ -5,17 +5,19 @@ import { Avatar, AvatarImage } from './ui/avatar'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 import { formatSalaryToLPA } from '@/lib/utils'
+import axios from 'axios'
+import { USER_API_END_POINT } from '@/utils/constant'
+import { toast } from 'sonner'
+import { useSelector } from 'react-redux'
 
-const Job = ({job}) => {
+const Job = ({job, initialBookmarkState}) => {
     const navigate = useNavigate();
-    const [isBookmarked, setIsBookmarked] = useState(false);
+    const { user } = useSelector(store => store.auth);
+    const [isBookmarked, setIsBookmarked] = useState(initialBookmarkState || false);
 
-    // Load bookmarked jobs from localStorage on component mount
     useEffect(() => {
-        const savedJobs = JSON.parse(localStorage.getItem('bookmarkedJobs') || '[]');
-        const isJobBookmarked = savedJobs.includes(job?._id);
-        setIsBookmarked(isJobBookmarked);
-    }, [job?._id]);
+        setIsBookmarked(initialBookmarkState || false);
+    }, [initialBookmarkState]);
 
     const daysAgoFunction = (mongodbTime) => {
         const createdAt = new Date(mongodbTime);
@@ -24,49 +26,56 @@ const Job = ({job}) => {
         return Math.floor(timeDifference/(1000*24*60*60));
     }
 
-    const handleBookmark = () => {
-        const savedJobs = JSON.parse(localStorage.getItem('bookmarkedJobs') || '[]');
-        
-        if (!isBookmarked) {
-            // Add to bookmarks
-            savedJobs.push(job?._id);
-            localStorage.setItem('bookmarkedJobs', JSON.stringify(savedJobs));
-            setIsBookmarked(true);
-            console.log('Job bookmarked:', job?._id);
-        } else {
-            // Remove from bookmarks
-            const updatedJobs = savedJobs.filter(id => id !== job?._id);
-            localStorage.setItem('bookmarkedJobs', JSON.stringify(updatedJobs));
-            setIsBookmarked(false);
-            console.log('Job bookmark removed:', job?._id);
+    const handleBookmark = async () => {
+        if (!user) {
+            toast.error("Please login to bookmark jobs");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const res = await axios.post(`${USER_API_END_POINT}/bookmark`, 
+                { jobId: job?._id },
+                { withCredentials: true }
+            );
+            
+            if (res.data.success) {
+                setIsBookmarked(res.data.bookmarked);
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || "Failed to bookmark job");
         }
     }
 
-    const handleSaveForLater = () => {
-        const savedJobs = JSON.parse(localStorage.getItem('bookmarkedJobs') || '[]');
-        
-        if (!savedJobs.includes(job?._id)) {
-            savedJobs.push(job?._id);
-            localStorage.setItem('bookmarkedJobs', JSON.stringify(savedJobs));
+    const handleSaveForLater = async () => {
+        if (!user) {
+            toast.error("Please login to save jobs");
+            navigate('/login');
+            return;
         }
-        
-        setIsBookmarked(true);
-        console.log('Job saved for later:', job?._id);
+
+        if (!isBookmarked) {
+            await handleBookmark();
+        } else {
+            toast.info("Job already saved");
+        }
     }
 
     const daysAgo = daysAgoFunction(job?.createdAt);
     
     return (
-        <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100 cursor-pointer'>
+        <div className='p-5 rounded-md shadow-xl bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 cursor-pointer transition-colors'>
             <div className='flex items-center justify-between'>
-                <p className='text-sm text-gray-500'>{daysAgo === 0 ? "Today" : `${daysAgo} days ago`}</p>
+                <p className='text-sm text-gray-500 dark:text-gray-400'>{daysAgo === 0 ? "Today" : `${daysAgo} days ago`}</p>
                 <Button 
                     variant="outline" 
                     className="rounded-full" 
                     size="icon"
                     onClick={handleBookmark}
                 >
-                    {isBookmarked ? <BookmarkCheck className="text-purple-600" /> : <Bookmark />}
+                    {isBookmarked ? <BookmarkCheck className="text-purple-600 dark:text-purple-400" /> : <Bookmark />}
                 </Button>
             </div>
 
@@ -77,24 +86,24 @@ const Job = ({job}) => {
                     </Avatar>
                 </Button>
                 <div>
-                    <h1 className='font-medium text-lg'>{job?.company?.name}</h1>
-                    <p className='text-sm text-gray-500'>India</p>
+                    <h1 className='font-medium text-lg text-gray-900 dark:text-gray-100'>{job?.company?.name}</h1>
+                    <p className='text-sm text-gray-500 dark:text-gray-400'>India</p>
                 </div>
             </div>
 
             <div>
-                <h1 className='font-bold text-lg my-2'>{job?.title}</h1>
-                <p className='text-sm text-gray-600'>{job?.description}</p>
+                <h1 className='font-bold text-lg my-2 text-gray-900 dark:text-white'>{job?.title}</h1>
+                <p className='text-sm text-gray-600 dark:text-gray-300'>{job?.description}</p>
             </div>
             <div className='flex items-center gap-2 mt-4'>
-                <Badge className={'text-blue-700 font-bold'} variant="ghost">{job?.position} Positions</Badge>
-                <Badge className={'text-[#F83002] font-bold'} variant="ghost">{job?.jobType}</Badge>
-                <Badge className={'text-[#7209b7] font-bold'} variant="ghost">{formatSalaryToLPA(job?.salary)}</Badge>
+                <Badge className={'text-blue-700 dark:text-blue-400 font-bold'} variant="ghost">{job?.position} Positions</Badge>
+                <Badge className={'text-[#F83002] dark:text-orange-400 font-bold'} variant="ghost">{job?.jobType}</Badge>
+                <Badge className={'text-[#7209b7] dark:text-purple-400 font-bold'} variant="ghost">{formatSalaryToLPA(job?.salary)}</Badge>
             </div>
             <div className='flex items-center gap-4 mt-4'>
                 <Button onClick={() => navigate(`/description/${job?._id}`)} variant="outline">Details</Button>
                 <Button 
-                    className="bg-[#7209b7] hover:bg-[#5a0790]" 
+                    className="bg-[#7209b7] hover:bg-[#5a0790] dark:bg-purple-600 dark:hover:bg-purple-700 text-white" 
                     onClick={handleSaveForLater}
                 >
                     {isBookmarked ? 'Saved ✓' : 'Save For Later'}

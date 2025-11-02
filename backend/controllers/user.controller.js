@@ -221,3 +221,117 @@ export const updateProfile = async (req, res) => {
         console.log(error);
     }
 }
+
+// Bookmark a job
+export const bookmarkJob = async (req, res) => {
+    try {
+        const userId = req.id; // from authentication middleware
+        const { jobId } = req.body;
+
+        if (!jobId) {
+            return res.status(400).json({
+                message: "Job ID is required",
+                success: false
+            });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                success: false
+            });
+        }
+
+        // Check if job is already bookmarked
+        const isBookmarked = user.bookmarkedJobs.includes(jobId);
+        
+        if (isBookmarked) {
+            // Remove bookmark
+            user.bookmarkedJobs = user.bookmarkedJobs.filter(id => id.toString() !== jobId);
+            await user.save();
+            return res.status(200).json({
+                message: "Job removed from bookmarks",
+                bookmarked: false,
+                success: true
+            });
+        } else {
+            // Add bookmark
+            user.bookmarkedJobs.push(jobId);
+            await user.save();
+            return res.status(200).json({
+                message: "Job bookmarked successfully",
+                bookmarked: true,
+                success: true
+            });
+        }
+    } catch (error) {
+        console.log("Error in bookmarkJob:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+}
+
+// Get all bookmarked jobs
+export const getBookmarkedJobs = async (req, res) => {
+    try {
+        const userId = req.id; // from authentication middleware
+
+        const user = await User.findById(userId).populate({
+            path: 'bookmarkedJobs',
+            populate: {
+                path: 'company',
+                select: 'name logo'
+            }
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                success: false
+            });
+        }
+
+        return res.status(200).json({
+            bookmarkedJobs: user.bookmarkedJobs,
+            success: true
+        });
+    } catch (error) {
+        console.log("Error in getBookmarkedJobs:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+}
+
+// Get current user profile
+export const getProfile = async (req, res) => {
+    try {
+        const userId = req.id; // from authentication middleware
+
+        const user = await User.findById(userId).select('-password').populate({
+            path: 'profile.company'
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                success: false
+            });
+        }
+
+        return res.status(200).json({
+            user,
+            success: true
+        });
+    } catch (error) {
+        console.log("Error in getProfile:", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+}
