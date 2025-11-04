@@ -41,14 +41,59 @@ const PORT = process.env.PORT || 3000;
 // Start server after DB connection
 const start = async () => {
     try {
+        console.log('⏳ Starting server...');
         await connectDB();
-        app.listen(PORT, () => {
-            console.log(`Server running at port ${PORT}`);
+        console.log('✅ DB connected, starting Express...');
+        
+        const server = app.listen(PORT, '0.0.0.0', () => {
+            console.log(`✅ Server running at port ${PORT}`);
+            console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+            console.log(`Server address:`, server.address());
+            console.log('🚀 Ready to accept connections');
         });
+        
+        // Keep server alive
+        server.on('error', (error) => {
+            console.error('❌ Server error:', error);
+            if (error.code === 'EADDRINUSE') {
+                console.error(`Port ${PORT} is already in use`);
+                process.exit(1);
+            }
+        });
+        
+        server.on('listening', () => {
+            console.log('👂 Server is listening...');
+        });
+        
+        // Graceful shutdown
+        process.on('SIGTERM', () => {
+            console.log('SIGTERM received. Closing server gracefully...');
+            server.close(() => {
+                console.log('Server closed');
+                process.exit(0);
+            });
+        });
+        
+        process.on('SIGINT', () => {
+            console.log('\nSIGINT received. Closing server gracefully...');
+            server.close(() => {
+                console.log('Server closed');
+                process.exit(0);
+            });
+        });
+        
+        console.log('🔧 Event handlers attached');
+        
     } catch (error) {
-        console.error('Failed to start server:', error);
+        console.error('❌ Failed to start server:', error);
         process.exit(1);
     }
 };
 
-start();
+console.log('📦 Starting application...');
+start().then(() => {
+    console.log('✨ Startup complete');
+}).catch((err) => {
+    console.error('💥 Startup failed:', err);
+    process.exit(1);
+});

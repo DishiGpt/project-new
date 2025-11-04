@@ -36,6 +36,7 @@ export const postJob = async (req, res) => {
 // student k liye
 export const getAllJobs = async (req, res) => {
     try {
+        console.log("📥 getAllJobs called - keyword:", req.query.keyword || "(none)");
         const keyword = req.query.keyword || "";
         const query = {
             $or: [
@@ -45,21 +46,27 @@ export const getAllJobs = async (req, res) => {
                 { jobType: { $regex: keyword, $options: "i" } },
             ]
         };
+        console.log("🔍 Finding jobs with query...");
         const jobs = await Job.find(query).populate({
             path: "company"
         }).sort({ createdAt: -1 });
-        if (!jobs) {
-            return res.status(404).json({
-                message: "Jobs not found.",
-                success: false
+        console.log(`✅ Found ${jobs?.length || 0} jobs`);
+        if (!jobs || jobs.length === 0) {
+            console.log("⚠️  No jobs found, returning empty array");
+            return res.status(200).json({
+                jobs: [],
+                success: true,
+                message: "No jobs found"
             })
         };
+        console.log(`📤 Sending ${jobs.length} jobs to frontend`);
         return res.status(200).json({
             jobs,
             success: true
         })
     } catch (error) {
-        console.log("Error in getAllJobs:", error);
+        console.error("❌ Error in getAllJobs:", error);
+        console.error("Stack:", error.stack);
         return res.status(500).json({
             message: "Internal server error",
             success: false,

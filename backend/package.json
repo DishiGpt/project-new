@@ -11,7 +11,8 @@
     "seed:destroy": "node utils/seeder.js -d",
     "seed:more": "node utils/addMoreJobs.js",
     "seed:refresh": "node utils/refreshDemoJobs.js",
-    "seed:blr": "node utils/addBangaloreJobs.js"
+    "seed:blr": "node utils/addBangaloreJobs.js",
+    "migrate:local": "node utils/migrateLocalToAtlas.js"
   },
   "author": "",
   "license": "ISC",
