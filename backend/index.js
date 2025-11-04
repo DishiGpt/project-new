@@ -32,6 +32,16 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
+// Root route for base URL
+app.get("/", (req, res) => {
+    res.status(200).json({
+        message: "Ignitex Job Portal API is running 🚀",
+        status: "success",
+        environment: process.env.NODE_ENV || "development",
+        mongo: process.env.MONGODB_URI ? "connected" : "not connected"
+    });
+});
+
 // Error Handling Middlewares
 app.use(notFound);
 app.use(errorHandler);
