@@ -3,6 +3,7 @@ import isAuthenticated from "../middlewares/isAuthenticated.js";
 import { getAdminJobs, getAllJobs, getJobById, postJob } from "../controllers/job.controller.js";
 
 const router = express.Router();
+router.route("/").get(getAllJobs);      
 
 router.route("/post").post(isAuthenticated, postJob);
 // Public: allow non-authenticated users to fetch job listings
