@@ -15,9 +15,15 @@ const useGetAllJobs = () => {
                 const res = await axios.get(`${JOB_API_END_POINT}/get`, {withCredentials:true});
                 console.log('✅ Jobs fetched successfully:', res.data.jobs?.length || 0, 'jobs');
                 
-                if(res.data.success){
+                if (res.data.jobs && Array.isArray(res.data.jobs)) {
                     dispatch(setAllJobs(res.data.jobs));
-                }
+                } else if (Array.isArray(res.data)) {
+  // fallback if backend sends plain array
+                    dispatch(setAllJobs(res.data));
+                } else {
+                    console.warn("⚠️ Unexpected response format:", res.data);
+            }
+
             } catch (error) {
                 console.error('❌ Error fetching jobs:', error.message);
                 if (error.response) {
