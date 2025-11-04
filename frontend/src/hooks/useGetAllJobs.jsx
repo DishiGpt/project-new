@@ -12,6 +12,8 @@ const useGetAllJobs = () => {
             try {
                 console.log('� Fetching all jobs from backend...');
                 
+                console.log("🌍 Calling API:", `${JOB_API_END_POINT}/get`);
+
                 const res = await axios.get(`${JOB_API_END_POINT}/get`, {withCredentials:true});
                 console.log('✅ Jobs fetched successfully:', res.data.jobs?.length || 0, 'jobs');
                 
