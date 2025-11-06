@@ -40,20 +40,42 @@ const PostJob = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        
+        // Validation
+        if (!input.companyId) {
+            toast.error('Please select a company');
+            return;
+        }
+        
         try {
             setLoading(true);
-            const res = await axios.post(`${JOB_API_END_POINT}/post`, input,{
-                headers:{
-                    'Content-Type':'application/json'
+            console.log('Posting job with data:', input);
+            
+            const res = await axios.post(`${JOB_API_END_POINT}/post`, input, {
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                withCredentials:true
+                withCredentials: true,
+                timeout: 30000 // 30 second timeout
             });
+            
+            console.log('Post job response:', res.data);
+            
             if(res.data.success){
                 toast.success(res.data.message);
                 navigate("/admin/jobs");
             }
         } catch (error) {
-            toast.error(error.response.data.message);
+            console.error('Post Job Error:', error);
+            
+            if (error.code === 'ECONNABORTED') {
+                toast.error('Request timeout. Please check your internet connection.');
+            } else if (error.response?.status === 401) {
+                toast.error('User not authenticated. Please login again.');
+            } else {
+                const errorMessage = error.response?.data?.message || error.message || 'Failed to post job. Please try again.';
+                toast.error(errorMessage);
+            }
         } finally{
             setLoading(false);
         }
