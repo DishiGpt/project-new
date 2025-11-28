@@ -13,11 +13,25 @@ import { useSelector } from 'react-redux'
 const Job = ({job, initialBookmarkState}) => {
     const navigate = useNavigate();
     const { user } = useSelector(store => store.auth);
-    const [isBookmarked, setIsBookmarked] = useState(initialBookmarkState || false);
+    
+    // Check if job is in user's bookmarked jobs
+    const isJobBookmarked = user?.bookmarkedJobs?.some(bookmarkedJobId => 
+        bookmarkedJobId === job?._id || bookmarkedJobId?._id === job?._id
+    );
+    
+    const [isBookmarked, setIsBookmarked] = useState(initialBookmarkState !== undefined ? initialBookmarkState : isJobBookmarked || false);
 
     useEffect(() => {
-        setIsBookmarked(initialBookmarkState || false);
-    }, [initialBookmarkState]);
+        // Update bookmark state when user or initialBookmarkState changes
+        if (initialBookmarkState !== undefined) {
+            setIsBookmarked(initialBookmarkState);
+        } else if (user?.bookmarkedJobs) {
+            const bookmarked = user.bookmarkedJobs.some(bookmarkedJobId => 
+                bookmarkedJobId === job?._id || bookmarkedJobId?._id === job?._id
+            );
+            setIsBookmarked(bookmarked);
+        }
+    }, [initialBookmarkState, user, job?._id]);
 
     const daysAgoFunction = (mongodbTime) => {
         const createdAt = new Date(mongodbTime);
